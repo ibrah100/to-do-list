@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('server/public'));
 
 // ROUTES
-app.use('/weekend-to-do-app', todoRouter)
+app.use('/tasks', todoRouter)
 
 
 // Start listening for requests on a specific port
