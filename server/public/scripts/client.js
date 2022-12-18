@@ -2,7 +2,9 @@ console.log( 'js' );
 
 $( document ).ready( function(){
     console.log( 'JQ' );
+    // rendering task list
     getTasks();
+    // setting up click listeners
     $('body').on('click', '#addTaskButton', saveTasks);
     $('body').on('click', '.completeButton', markTaskAsCompleted);
     $('body').on('click', '.deleteButton', deleteTask);
@@ -18,6 +20,7 @@ function getTasks(){
   }).then( (response) => {
     $('#toDoList').empty();
     for (let i = 0; i < response.length; i++) {
+        // if tasks are complete, render list and add check emoji
         if (response[i].complete === true) {
             $('#toDoList').append(`
                 <li class="list-group-item" data-id="${response[i].id}">
@@ -26,7 +29,7 @@ function getTasks(){
                     <button class="deleteButton btn btn-outline-dark">🗑️</button> 
                 </li>
             `)
-        } else {
+        } else { // if tasks aren't complete, render list and add box emoji
             $('#toDoList').append(`
                 <li class="list-group-item" data-id="${response[i].id}">
                     ${response[i].task}
@@ -49,6 +52,7 @@ function saveTasks(){
     let newTask = $('#taskInput').val();
     console.log('Here is your new task: ' + newTask);
 
+    // ajax call to server to get new tasks
     $.ajax({
         method: 'POST',
         url: '/tasks',
@@ -70,6 +74,7 @@ function markTaskAsCompleted(){
     let idToUpdate = $(this).parent().data().id;
     console.log(idToUpdate);
 
+    // ajax call to server to update task as complete in database
     $.ajax({
         method: 'PUT',
         url: `/tasks/${idToUpdate}`,
@@ -87,6 +92,7 @@ function deleteTask(){
     let idToDelete = $(this).parent().data().id;
     console.log(idToDelete);
 
+    // ajax call to server to delete the task from database
     $.ajax ({
         method: 'DELETE',
         url: `/tasks/${idToDelete}`
