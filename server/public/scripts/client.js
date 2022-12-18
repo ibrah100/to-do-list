@@ -2,10 +2,10 @@ console.log( 'js' );
 
 $( document ).ready( function(){
     console.log( 'JQ' );
-    $('body').on('click', '#addTaskButton', saveTasks);
-    $('body').on('click', '#completeButton', markTaskAsCompleted);
-
     getTasks();
+    $('body').on('click', '#addTaskButton', saveTasks);
+    $('body').on('click', '.completeButton', markTaskAsCompleted);
+    $('body').on('click', '.deleteButton', deleteTask);
 
 }); // end doc ready
 
@@ -18,13 +18,23 @@ function getTasks(){
   }).then( (response) => {
     $('#toDoList').empty();
     for (let i = 0; i < response.length; i++) {
-        $('#toDoList').append(`
-            <li data-id="${response[i].id}">
-                ${response[i].task}
-                <button class="completeButton">✔</button>
-                <button class="deleteButton">Delete</button> 
-            </li>
-        `)
+        if (response[i].complete === true) {
+            $('#toDoList').append(`
+                <li data-id="${response[i].id}">
+                    ${response[i].task}
+                    <button class="completeButton">✅</button>
+                    <button class="deleteButton">🗑️</button> 
+                </li>
+            `)
+        } else {
+            $('#toDoList').append(`
+                <li data-id="${response[i].id}">
+                    ${response[i].task}
+                    <button class="completeButton">🔲</button>
+                    <button class="deleteButton">🗑️</button> 
+                </li>
+            `)
+        }
       }
   }).catch( (error) => {
     console.log('Error in GET /tasks client side', error)
@@ -57,7 +67,7 @@ function saveTasks(){
 
 function markTaskAsCompleted(){
     console.log('Task is completed');
-    let idToUpdate = $(this).data().id;
+    let idToUpdate = $(this).parent().data().id;
     console.log(idToUpdate);
 
     $.ajax({
@@ -73,7 +83,19 @@ function markTaskAsCompleted(){
         });
 }
 
-function deleteTask(){}
+function deleteTask(){
+    let idToDelete = $(this).parent().data().id;
+    console.log(idToDelete);
+
+    $.ajax ({
+        method: 'DELETE',
+        url: `/tasks/${idToDelete}`
+    }).then ((res) => {
+        getTasks();
+    }).catch((error) => {
+        console.log('error in DELETE /tasks on client side', error);
+    })
+}
 
 
 

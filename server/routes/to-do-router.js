@@ -9,6 +9,7 @@ const pool = require('../modules/pool.js');
 todoRouter.get('/', (req, res) => {
     let sqlQuery = `
     SELECT * FROM "tasks"
+    ORDER BY "id" ASC
     `;
     pool.query(sqlQuery)
     .then((dbRes) => {
@@ -41,12 +42,50 @@ todoRouter.post('/', (req, res) => {
 })
 
 // PUT
-todoRouter.put('/:id', (req,res) => {})
+todoRouter.put('/:id', (req,res) => {
+    console.log('req.params: ', req.params);
+    console.log('req.body: ', req.body);
+  
+    let idToUpdate = req.params.id;
+    let newComplete = req.body.complete;
+
+    let sqlQuery = `
+        UPDATE "tasks"
+            SET "complete"=$1
+            WHERE "id"=$2
+    `
+    let sqlValues = [newComplete, idToUpdate];
+    pool.query(sqlQuery, sqlValues)
+        .then( (dbRes) => {
+            res.sendStatus(200);
+        })
+        .catch( (dbErr) => {
+            console.log('Error in PUT /:id')
+            res.sendStatus(500);
+        })
+})
 
 
 
 //DELETE
-todoRouter.delete('/:id', (req, res) => {})
+todoRouter.delete('/:id', (req, res) => {
+    console.log(req.params);
+    let idToDelete = req.params.id;
+
+    let sqlQuery = `
+        DELETE FROM "tasks"
+            WHERE "id"=$1;
+    `
+    let sqlValues = [idToDelete];
+    pool.query(sqlQuery, sqlValues)
+    .then((dbRes) => {
+        res.sendStatus(200);
+    })
+    .catch((dbErr) => {
+        console.log('error in DELETE /:id', dbErr);
+        res.sendStatus(500);
+    })
+})
 
 
 
