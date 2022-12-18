@@ -1,9 +1,9 @@
 # Project Name
 
-[Project Instructions](./INSTRUCTIONS.md), this line may be removed once you have updated the README.md
+To-Do List
 
 ## Description
 
-Your project description goes here. What problem did you solve? How did you solve it?
+Basic to-do list application where a user can add tasks to a checklist and mark them as completed or delete them.
 
 Additional README details can be found [here](https://github.com/PrimeAcademy/readme-template/blob/master/README.md).
