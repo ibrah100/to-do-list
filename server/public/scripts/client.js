@@ -20,18 +20,18 @@ function getTasks(){
     for (let i = 0; i < response.length; i++) {
         if (response[i].complete === true) {
             $('#toDoList').append(`
-                <li data-id="${response[i].id}">
-                    ${response[i].task}
-                    <button class="completeButton">✅</button>
-                    <button class="deleteButton">🗑️</button> 
+                <li class="list-group-item" data-id="${response[i].id}">
+                    <span class="complete">${response[i].task}</span>
+                    <button class="completeButton btn btn-outline-dark">✅</button>
+                    <button class="deleteButton btn btn-outline-dark">🗑️</button> 
                 </li>
             `)
         } else {
             $('#toDoList').append(`
-                <li data-id="${response[i].id}">
+                <li class="list-group-item" data-id="${response[i].id}">
                     ${response[i].task}
-                    <button class="completeButton">🔲</button>
-                    <button class="deleteButton">🗑️</button> 
+                    <button class="completeButton btn btn-outline-dark">🔲</button>
+                    <button class="deleteButton btn btn-outline-dark">🗑️</button> 
                 </li>
             `)
         }
